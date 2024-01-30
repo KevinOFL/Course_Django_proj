@@ -1,8 +1,13 @@
-from django.test import TestCase
 from django.urls import reverse, resolve
 from recipes import views
 
-class RecipeViewTest(TestCase):
+from .test_recipe_base import RecipeTestBase
+
+class RecipeViewTest(RecipeTestBase):
+    
+    def tearDown(self) -> None:
+        return super().tearDown()
+
     def test_recipe_home_viwe_function_is_correct(self):
         view = resolve(reverse('recipes:home'))
         self.assertIs(view.func, views.home)
@@ -16,11 +21,17 @@ class RecipeViewTest(TestCase):
         self.assertTemplateUsed(response, 'recipes/pages/home.html')
 
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipe(self):
+        
         response = self.client.get(reverse('recipes:home'))
         self.assertIn(
             '<h1>No recipes found here</h1>',
             response.content.decode('utf-8')
         )
+
+    def test_recipe_home_template_leads_recipes(self):
+        response = self.client.get(reverse('recipes:home'))
+        response_context = response.content.decode('utf-8')
+        self.assertIn('Recipe test', response_context)
 
     def test_recipe_category_viwe_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
