@@ -1,0 +1,4 @@
+[run]
+branch = True
+omit = Dj_venv/*, **/*test*.py, manage.py, __localcode/*,
+    course_project/*, recipes/migrations/*
