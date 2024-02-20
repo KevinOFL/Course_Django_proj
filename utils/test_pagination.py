@@ -1,5 +1,5 @@
 from unittest import TestCase
-from utils.pagination import make_pagination_range
+from utils.pagination import make_pagination_range, make_pagination
 
 class PaginationTest(TestCase):
     def test_make_pagination_range_returns_a_pagination_range(self):
@@ -69,3 +69,17 @@ class PaginationTest(TestCase):
             current_page=21,
         )['pagination']
         self.assertEqual([17,18,19,20], pagination)
+
+    def test_value_error_for_current_page(self):
+        # Definindo uma queryset vazia apenas para fins de teste
+        queryset = []
+        per_page = 10
+        
+        # Criando uma requisição falsa com um valor inválido para a página
+        request = type('FakeRequest', (object,), {'GET': {'page': 'invalid'}})()
+        
+        # Chamando a função make_pagination com a requisição falsa
+        page_obj, pagination_range = make_pagination(request, queryset, per_page)
+        
+        # Verificando se a página atual foi definida como 1 quando ValueError foi lançado
+        assert page_obj.number == 1
