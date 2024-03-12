@@ -324,6 +324,19 @@ h6 {
     border: 1px solid var(--color-primary-dark);
 }
 
+.plaintext-buttom {
+    display: inline;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: var(--color-primary);
+    font-size: 1.6rem;
+}
+
+.inline-form {
+    display: inline;
+}
+
 /* Messages */
 
 .message {
